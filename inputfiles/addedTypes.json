@@ -208,6 +208,22 @@
                     ]
                 }
             },
+            "NavigatorOnLine": {
+                "name": "NavigatorOnLine",
+                "extends": "Object",
+                "properties": {
+                    "property": {
+                        "onLine": {
+                            "name": "onLine",
+                            "read-only": 1,
+                            "type": "boolean",
+                            "exposed": "Window Worker"
+                        }
+                    }
+                },
+                "exposed": "Window Worker",
+                "no-interface-object": 1
+            },
             "WindowEventHandlers": {
                 "events": {
                     "event": [
@@ -313,42 +329,216 @@
                 }
             },
             "ApplicationCache": {
+                "name": "ApplicationCache",
+                "extends": "EventTarget",
+                "constants": {
+                    "constant": {
+                        "CHECKING": {
+                            "name": "CHECKING",
+                            "type": "unsigned short",
+                            "value": "2",
+                            "exposed": "Window"
+                        },
+                        "UPDATEREADY": {
+                            "name": "UPDATEREADY",
+                            "type": "unsigned short",
+                            "value": "4",
+                            "exposed": "Window"
+                        },
+                        "UNCACHED": {
+                            "name": "UNCACHED",
+                            "type": "unsigned short",
+                            "value": "0",
+                            "exposed": "Window"
+                        },
+                        "DOWNLOADING": {
+                            "name": "DOWNLOADING",
+                            "type": "unsigned short",
+                            "value": "3",
+                            "exposed": "Window"
+                        },
+                        "IDLE": {
+                            "name": "IDLE",
+                            "type": "unsigned short",
+                            "value": "1",
+                            "exposed": "Window"
+                        },
+                        "OBSOLETE": {
+                            "name": "OBSOLETE",
+                            "type": "unsigned short",
+                            "value": "5",
+                            "exposed": "Window"
+                        }
+                    }
+                },
+                "methods": {
+                    "method": {
+                        "swapCache": {
+                            "name": "swapCache",
+                            "exposed": "Window",
+                            "signature": [
+                                {
+                                    "type": "void"
+                                }
+                            ]
+                        },
+                        "abort": {
+                            "name": "abort",
+                            "exposed": "Window",
+                            "signature": [
+                                {
+                                    "type": "void"
+                                }
+                            ]
+                        },
+                        "update": {
+                            "name": "update",
+                            "exposed": "Window",
+                            "signature": [
+                                {
+                                    "type": "void"
+                                }
+                            ]
+                        }
+                    }
+                },
                 "events": {
                     "event": [
                         {
-                            "name": "checking",
-                            "type": "Event"
-                        },
-                        {
-                            "name": "noupdate",
-                            "type": "Event"
-                        },
-                        {
-                            "name": "downloading",
-                            "type": "Event"
-                        },
-                        {
                             "name": "progress",
-                            "type": "ProgressEvent"
-                        },
-                        {
-                            "name": "cached",
-                            "type": "Event"
-                        },
-                        {
-                            "name": "updateready",
-                            "type": "Event"
+                            "type": "ProgressEvent",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "downloading",
+                            "precedes": "updateready"
                         },
                         {
                             "name": "obsolete",
-                            "type": "Event"
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "downloading"
                         },
                         {
                             "name": "error",
-                            "type": "Event"
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "downloading"
+                        },
+                        {
+                            "name": "cached",
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "downloading"
+                        },
+                        {
+                            "name": "updateready",
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "progress"
+                        },
+                        {
+                            "name": "downloading",
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "checking",
+                            "precedes": "noupdate progress obsolete cached"
+                        },
+                        {
+                            "name": "noupdate",
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "follows": "downloading"
+                        },
+                        {
+                            "name": "checking",
+                            "type": "Event",
+                            "dispatch": "sync",
+                            "skips-window": 1,
+                            "precedes": "downloading"
                         }
                     ]
-                }
+                },
+                "properties": {
+                    "property": {
+                        "status": {
+                            "name": "status",
+                            "read-only": 1,
+                            "type": "unsigned short",
+                            "exposed": "Window"
+                        },
+                        "onprogress": {
+                            "name": "onprogress",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "progress",
+                            "exposed": "Window"
+                        },
+                        "ondownloading": {
+                            "name": "ondownloading",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "downloading",
+                            "exposed": "Window"
+                        },
+                        "onupdateready": {
+                            "name": "onupdateready",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "updateready",
+                            "exposed": "Window"
+                        },
+                        "oncached": {
+                            "name": "oncached",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "cached",
+                            "exposed": "Window"
+                        },
+                        "onobsolete": {
+                            "name": "onobsolete",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "obsolete",
+                            "exposed": "Window"
+                        },
+                        "onerror": {
+                            "name": "onerror",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "error",
+                            "exposed": "Window"
+                        },
+                        "onchecking": {
+                            "name": "onchecking",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "checking",
+                            "exposed": "Window"
+                        },
+                        "onnoupdate": {
+                            "name": "onnoupdate",
+                            "type-original": "EventHandler",
+                            "nullable": 1,
+                            "type": "EventHandlerNonNull",
+                            "event-handler": "noupdate",
+                            "exposed": "Window"
+                        }
+                    }
+                },
+                "exposed": "Window"
             },
             "BroadcastChannel": {
                 "events": {
@@ -441,6 +631,12 @@
                 "name": "Window",
                 "properties": {
                     "property": {
+                        "applicationCache": {
+                            "name": "applicationCache",
+                            "exposed": "Window",
+                            "type": "ApplicationCache",
+                            "read-only": 1
+                        },
                         "customElements": {
                             "name": "customElements",
                             "type": "CustomElementRegistry"
@@ -725,7 +921,10 @@
                             "type": "DOMString"
                         }
                     }
-                }
+                },
+                "implements": [
+                    "NavigatorOnLine"
+                ]
             },
             "IDBArrayKey": {
                 "name": "IDBArrayKey",
@@ -2290,6 +2489,11 @@
                         }
                     ]
                 }
+            },
+            "WorkerNavigator": {
+                "implements": [
+                    "NavigatorOnLine"
+                ]
             }
         }
     },
